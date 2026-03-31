@@ -14,7 +14,7 @@
 
 ## 🚀 Live Demo
 
-> **📊 [→ Open Streamlit Dashboard](https://tuyetngth2558-ai-customer-nurturing.streamlit.app)** *(deploy via Streamlit Community Cloud)*
+> **📊 [→ Open Streamlit Dashboard](https://ai-customer-nurturing-edx2q2ankrstujswqc3myd.streamlit.app/)** *(deploy via Streamlit Community Cloud)*
 
 ---
 
