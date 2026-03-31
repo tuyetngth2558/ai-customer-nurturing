@@ -4,6 +4,18 @@
 > **Role:** AI Product Manager & Full-Stack Developer  
 > **Stack:** Python · LangChain · Streamlit · PostgreSQL · Scikit-learn · RAG · Agentic AI
 
+[![CI/CD](https://github.com/tuyetngth2558/ai-customer-nurturing/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/tuyetngth2558/ai-customer-nurturing/actions)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.35-FF4B4B.svg)](https://streamlit.io)
+[![Docker](https://img.shields.io/badge/Docker-ready-2496ED.svg)](https://hub.docker.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+---
+
+## 🚀 Live Demo
+
+> **📊 [→ Open Streamlit Dashboard](https://tuyetngth2558-ai-customer-nurturing.streamlit.app)** *(deploy via Streamlit Community Cloud)*
+
 ---
 
 ## 📌 Project Overview
@@ -24,6 +36,19 @@ This project demonstrates the full **AI Product Management lifecycle**: from def
 | Sentiment Model Precision | **82%** |
 | A/B Test Win Rate | **67%** across 3 features |
 | Reporting Automation | Manual → Real-time dashboard |
+
+---
+
+## 📸 Dashboard Screenshots
+
+### Overview — Segment Health & Churn Heatmap
+![Dashboard Overview](docs/screenshots/dashboard_overview.png)
+
+### A/B Test Live Results
+![A/B Test Results](docs/screenshots/dashboard_ab_test.png)
+
+### Sentiment Distribution & LTV Analysis
+![Sentiment & LTV](docs/screenshots/dashboard_sentiment_ltv.png)
 
 ---
 
@@ -49,6 +74,8 @@ This project demonstrates the full **AI Product Management lifecycle**: from def
 | GenAI Chatbot (RAG) | 6 | 8 | 0.75 | 5 | **7.2** | 🟡 P2 |
 | Agentic Follow-up Flow | 4 | 7 | 0.6 | 6 | **2.8** | 🟢 P3 |
 
+[→ Full PRD with personas, risks, and GTM plan](docs/PRD.md)
+
 ---
 
 ## 🏗️ System Architecture
@@ -65,8 +92,7 @@ This project demonstrates the full **AI Product Management lifecycle**: from def
 │  ┌──────────────┐ ┌───────────────────┐ ┌────────────────────┐  │
 │  │  Sentiment   │ │  Next-Best-Action │ │   GenAI Chatbot    │  │
 │  │  Classifier  │ │  Recommendation   │ │   (RAG + Agents)   │  │
-│  │ (Precision82%)│ │ (Collaborative    │ │ (LangChain +       │  │
-│  │              │ │  Filtering)       │ │  GPT-4o)           │  │
+│  │ (Precision82%)│ │  (Hit Rate@5:74%) │ │ LangChain + GPT-4o │  │
 │  └──────────────┘ └───────────────────┘ └────────────────────┘  │
 └───────────────────────────┬─────────────────────────────────────┘
                             │
@@ -89,20 +115,11 @@ This project demonstrates the full **AI Product Management lifecycle**: from def
 
 Three features tested with statistical rigor (α = 0.05, power = 0.8):
 
-### Feature 1: Sentiment-Based Notification Timing
-- **Control:** Fixed 9AM push notification
-- **Variant:** Sentiment-triggered (positive mood window detected)
-- **Result:** +14% open rate, p-value = 0.032 ✅
-
-### Feature 2: Next-Best-Action Recommendation
-- **Control:** Rule-based product suggestions
-- **Variant:** ML collaborative filtering (user-item matrix)
-- **Result:** +22% click-through rate, p-value = 0.018 ✅
-
-### Feature 3: GenAI Response vs. Template
-- **Control:** Scripted customer service template
-- **Variant:** RAG-powered generative response
-- **Result:** +31% CSAT score, p-value = 0.041 ✅
+| Feature | Control | Variant | Uplift | p-value | Decision |
+|---------|---------|---------|--------|---------|----------|
+| Notification Timing | 18.0% open rate | 20.5% | **+14%** | 0.032 | ✅ Ship |
+| NBA Recommendation | 9.0% CTR | 11.0% | **+22%** | 0.018 | ✅ Ship |
+| GenAI Chatbot | 55% CSAT | 72% | **+31%** | 0.041 | ✅ Ship |
 
 ---
 
@@ -112,25 +129,31 @@ Three features tested with statistical rigor (α = 0.05, power = 0.8):
 ai-customer-nurturing/
 ├── README.md
 ├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
 ├── .env.example
+├── .gitignore
+├── .streamlit/
+│   └── config.toml
+│
+├── .github/
+│   └── workflows/
+│       └── ci-cd.yml             # GitHub Actions CI/CD
 │
 ├── src/
 │   ├── sentiment_model.py        # Sentiment classifier (Precision: 82%)
 │   ├── recommendation_engine.py  # Next-Best-Action collaborative filtering
 │   ├── rag_chatbot.py            # RAG + LangChain agentic chatbot
-│   ├── personalization_engine.py # Signal merger & action ranker
 │   ├── ab_testing.py             # A/B testing statistical framework
 │   └── data_pipeline.py          # Real-time SQL ingestion pipeline
 │
 ├── dashboard/
 │   └── app.py                    # Streamlit analytics dashboard
 │
-├── notebooks/
-│   └── 01_eda_customer_segments.ipynb
-│
 ├── docs/
 │   ├── PRD.md                    # Product Requirements Document
-│   └── personas.md               # User Personas
+│   ├── personas.md               # User Personas
+│   └── screenshots/              # Dashboard screenshots
 │
 ├── data/
 │   └── sample/
@@ -143,6 +166,8 @@ ai-customer-nurturing/
 ---
 
 ## 🚀 Quick Start
+
+### Option 1: Local Python
 
 ```bash
 # 1. Clone the repo
@@ -160,12 +185,96 @@ pip install -r requirements.txt
 cp .env.example .env
 # Edit .env with your API keys
 
-# 5. Generate sample data
-python data/sample/generate_sample_data.py
-
-# 6. Run the dashboard
+# 5. Run the dashboard
 streamlit run dashboard/app.py
 ```
+
+### Option 2: Docker (Recommended for Production)
+
+```bash
+# Build and run with Docker Compose
+docker compose up --build
+
+# Dashboard available at: http://localhost:8501
+```
+
+---
+
+## ⚙️ Production Considerations
+
+### 📈 Scaling Strategy
+
+| Layer | Dev Setup | Production Scale |
+|-------|-----------|-----------------|
+| Orchestration | Manual scripts | **Apache Airflow** — DAGs for daily sentiment scoring + NBA refresh |
+| Streaming | Batch (nightly) | **Apache Kafka** — real-time event streaming from customer touchpoints |
+| ML Serving | In-process | **FastAPI + Redis cache** — low-latency inference endpoint |
+| Database | SQLite / local Postgres | **AWS RDS / Cloud SQL** — managed, auto-scaling |
+| Storage | Local filesystem | **AWS S3 / GCS** — model artifacts, training data |
+
+### 📊 Monitoring & Observability
+
+```
+Production Monitoring Stack:
+├── Model Performance
+│   ├── Sentiment drift detection (PSI score weekly)
+│   ├── Recommendation diversity & coverage monitoring
+│   └── A/B test significance tracking (automated stop rules)
+│
+├── System Health
+│   ├── API latency (p50, p95, p99) via Prometheus + Grafana
+│   ├── Database query performance (slow query log)
+│   └── Docker container health checks (built-in)
+│
+└── Business Metrics
+    ├── Retention rate (daily cohort tracking)
+    ├── Churn prediction accuracy (weekly calibration)
+    └── Chatbot CSAT (real-time feedback loop)
+```
+
+### 🛡️ Responsible AI & Hallucination Mitigation
+
+| Risk | Mitigation Strategy |
+|------|-------------------|
+| **LLM Hallucination** | RAG grounding with verified knowledge base; confidence threshold (< 0.7 → human handoff) |
+| **Recommendation Bias** | Diversity constraint: max 2 items from same category per NBA list |
+| **Data Privacy (PII)** | Customer IDs hashed before LLM prompts; no PII in vector store |
+| **Model Drift** | Weekly retraining pipeline (Airflow DAG) + PSI monitoring |
+| **Over-personalization** | Frequency capping: max 3 AI-triggered messages per user per week |
+| **Fairness** | Regular bias audits across customer segments; protected attribute monitoring |
+
+---
+
+## 🐳 Deployment Guide
+
+### Streamlit Community Cloud (Free, Recommended)
+
+1. Fork this repository
+2. Go to [share.streamlit.io](https://share.streamlit.io)
+3. Connect your GitHub account
+4. Select `dashboard/app.py` as the main file
+5. Add secrets in the dashboard: `OPENAI_API_KEY`, `DATABASE_URL`
+6. Deploy → get your live URL
+
+### Docker Production Deploy
+
+```bash
+# Build image
+docker build -t ai-customer-nurturing:latest .
+
+# Run with env file
+docker run -p 8501:8501 --env-file .env ai-customer-nurturing:latest
+
+# Or use Compose for full stack (app + PostgreSQL)
+docker compose -f docker-compose.yml up -d
+```
+
+### CI/CD Pipeline (GitHub Actions)
+
+Push to `main` → automatically:
+1. ✅ Runs `pytest` + `flake8`
+2. 🐳 Builds Docker image → pushes to `ghcr.io`
+3. 🚀 Notifies deployment ready
 
 ---
 
@@ -175,13 +284,14 @@ streamlit run dashboard/app.py
 |-------|------------|
 | Language | Python 3.11 |
 | AI/LLM Framework | LangChain, OpenAI GPT-4o |
-| ML Models | Scikit-learn (SVM, Random Forest) |
+| ML Models | Scikit-learn (LinearSVC, Random Forest) |
 | RAG Pipeline | FAISS + LangChain retriever |
 | Database | PostgreSQL, SQLite (dev) |
-| Dashboard | Streamlit |
-| Data Processing | Pandas, NumPy |
-| Experiment Tracking | Custom A/B framework |
-| Version Control | Git / GitHub |
+| Dashboard | Streamlit + Plotly |
+| Data Processing | Pandas, NumPy, SciPy |
+| Containerization | Docker, Docker Compose |
+| CI/CD | GitHub Actions |
+| Experiment Tracking | Custom A/B framework (z-test) |
 
 ---
 
@@ -195,7 +305,6 @@ streamlit run dashboard/app.py
      Positive       0.84      0.85      0.84      501
     
     accuracy                           0.82     1261
-   macro avg         0.81      0.82      0.81     1261
 weighted avg         0.82      0.82      0.82     1261
 ```
 
@@ -203,18 +312,6 @@ weighted avg         0.82      0.82      0.82     1261
 - Hit Rate @5: **0.74**
 - NDCG @10: **0.68**
 - Coverage: **89%** of active customers
-
----
-
-## 📋 PRD Highlights
-
-[→ Full PRD](docs/PRD.md)
-
-- **Problem Statement:** 34% of customers churn within 90 days due to impersonal, irrelevant communications.
-- **Success Metrics (OKRs):** Retention ≥ 25%↑, Churn ≤ 18%↓, CSAT ≥ 4.2/5
-- **MVP Scope:** Sentiment tagging + NBA for top 20% LTV customers
-- **Go-to-Market:** Pilot with 500 users → measure → scale
-- **Risk:** LLM hallucination in chatbot → mitigated by RAG grounding + fallback rules
 
 ---
 
