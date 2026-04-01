@@ -90,7 +90,7 @@ df = customers[customers["segment"].isin(segment_filter)]
 
 # ── Header ─────────────────────────────────────────────────────────────────
 st.title("🤖 AI Customer Nurturing & Personalization")
-st.markdown("*AI Product Manager Dashboard — VinUni Course Project 2026*")
+st.markdown("*AI Product Manager Dashboard — Personal Portfolio Project 2026*")
 st.markdown("---")
 
 # ── KPI Metrics ────────────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 # 🤖 AI-Powered Customer Nurturing & Personalization Platform
 
-> **VinUni AI Thực Chiến – Course Project 2026** | Simulated Data  
+> **Personal AI Product Portfolio Project – 2026** | Simulated Data  
 > **Role:** AI Product Manager & Full-Stack Developer  
 > **Stack:** Python · LangChain · Streamlit · PostgreSQL · Scikit-learn · RAG · Agentic AI
 
